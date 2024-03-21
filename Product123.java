@@ -16,6 +16,10 @@ import javax.swing.table.DefaultTableModel;
 import java.util.Vector;
 import java.util.*;
 import net.proteanit.sql.DbUtils;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.table.*;
+import javax.swing.RowFilter;
 //import net.proteanit.sql.DbUtils;
 
 
@@ -23,6 +27,7 @@ import net.proteanit.sql.DbUtils;
  *
  * @author 
  */
+
 
 
 public class Product123 extends javax.swing.JFrame {
@@ -34,6 +39,8 @@ public class Product123 extends javax.swing.JFrame {
         initComponents();
         Connect();
         SelectProd();
+        //findUsers();
+        searchAlgo();
         
         Clear.setOpaque(false);
         //Clear.setContentAreaFilled(false);
@@ -86,6 +93,7 @@ public class Product123 extends javax.swing.JFrame {
         } 
 }
     
+
     
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -95,6 +103,8 @@ public class Product123 extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         Logout = new javax.swing.JButton();
         unselect = new javax.swing.JButton();
+        searchBox = new javax.swing.JTextField();
+        searchButton = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         CustomerTable = new javax.swing.JTable();
@@ -150,6 +160,27 @@ public class Product123 extends javax.swing.JFrame {
             }
         });
 
+        searchBox.setToolTipText("");
+        searchBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchBoxActionPerformed(evt);
+            }
+        });
+
+        searchButton.setBackground(new java.awt.Color(200, 234, 211));
+        searchButton.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        searchButton.setText("SEARCH");
+        searchButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                searchButtonMouseClicked(evt);
+            }
+        });
+        searchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -158,6 +189,10 @@ public class Product123 extends javax.swing.JFrame {
                 .addGap(46, 46, 46)
                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 358, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(searchBox, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(searchButton)
+                .addGap(71, 71, 71)
                 .addComponent(unselect, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(Logout, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -169,12 +204,16 @@ public class Product123 extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(unselect, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Logout, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addGap(0, 32, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(searchBox, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(searchButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(unselect, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(Logout, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel5)
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(0, 30, Short.MAX_VALUE))
         );
 
         jPanel1.setBackground(new java.awt.Color(207, 255, 229));
@@ -189,7 +228,7 @@ public class Product123 extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Container ID", "Customer Name", "Address", "Order Status"
+                "ContainerID", "CustomerName", "Address", "OrderStatus"
             }
         ));
         CustomerTable.setShowGrid(false);
@@ -330,7 +369,7 @@ public class Product123 extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 772, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7))
-                .addContainerGap(70, Short.MAX_VALUE))
+                .addContainerGap(71, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addContainerGap()
@@ -390,7 +429,7 @@ public class Product123 extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -408,6 +447,36 @@ public class Product123 extends javax.swing.JFrame {
             Logger.getLogger(Product123.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public ArrayList<User> ListUser(String ValToSearch) {
+        ArrayList<User> usersList = new ArrayList<User>();
+        
+        Statement St;
+        ResultSet rs;
+        
+        try{
+            Con = DriverManager.getConnection("jdbc:mysql://localhost:3306/katasnialbu", "root", "");
+            St = Con.createStatement();
+            String searchQuery = "select * from `customertable` where CONCAT(`containerID`, `customerName`, `customerAddress`, `orderStatus`) LIKE '%" + ValToSearch + "%'";
+            rs = St.executeQuery(searchQuery);
+            
+            User user;
+            
+            while(rs.next()) {
+                user = new User(rs.getInt("containerID"),
+                                rs.getString("customerName"),
+                                rs.getString("customerAddress"),
+                                rs.getString("orderStatus")
+                                );
+                usersList.add(user);
+            }
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+            Logger.getLogger(Product123.class.getName()).log(Level.SEVERE, null, ex);
+    }
+        return usersList;
+    }
+    
     
     
     private void customerNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerNameActionPerformed
@@ -534,32 +603,24 @@ public class Product123 extends javax.swing.JFrame {
         CustomerTable.getSelectionModel().clearSelection();
     }//GEN-LAST:event_unselectActionPerformed
 
+    private void searchBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchBoxActionPerformed
+
+    private void searchButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchButtonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchButtonMouseClicked
+
+    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
+        searchAlgo();
+    }//GEN-LAST:event_searchButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Product123.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Product123.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Product123.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Product123.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+        
         //</editor-fold>
 
         /* Create and display the form */
@@ -569,7 +630,24 @@ public class Product123 extends javax.swing.JFrame {
             }
         });
     }
-
+    
+    
+        public void searchAlgo() {
+        ArrayList<User> users = ListUser(searchBox.getText());
+        DefaultTableModel model = new DefaultTableModel();
+        model.setColumnIdentifiers(new Object[]{"ContainerID","CustomerName","CustomerAddress","OrderStatus"});
+        Object[] row = new Object[4];
+        
+        for(int i = 0; i < users.size(); i++){
+            row[0] = users.get(i).getcontainerID();
+            row[1] = users.get(i).getcustomerName();
+            row[2] = users.get(i).getcustomerAddress();
+            row[3] = users.get(i).getorderStatus();
+            model.addRow(row);
+    }
+    CustomerTable.setModel(model);
+        
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Add;
     private javax.swing.JButton Clear;
@@ -591,6 +669,8 @@ public class Product123 extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField orderStatus;
+    private javax.swing.JTextField searchBox;
+    private javax.swing.JButton searchButton;
     private javax.swing.JButton unselect;
     // End of variables declaration//GEN-END:variables
 
